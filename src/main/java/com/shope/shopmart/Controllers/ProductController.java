@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.shope.shopmart.Services.ProductService;
 import com.shope.shopmart.dtos.AddProductDto;
@@ -52,5 +53,20 @@ public class ProductController {
         // .ok("Product deleted successfully");
     }
 
+
+    @GetMapping("/search/findbymanufacturer")
+    public ResponseEntity<?> getByManufacturer(@RequestParam String manufacturer) {
+        return ResponseEntity.ok(this.productService.getByManufacturer(manufacturer));
+    }
+
+    @GetMapping("/search/findbyprice")
+    public ResponseEntity<?> getByPrice(@RequestParam Double price) {
+        return ResponseEntity.ok(this.productService.getByPrice(price));
+    }
+
+    @GetMapping("/search/sortbyname")
+    public ResponseEntity<?> sortByName() {
+        return ResponseEntity.ok(this.productService.sortByName());
+    }
 
 }

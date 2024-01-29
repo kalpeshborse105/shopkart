@@ -1,8 +1,8 @@
 package com.shope.shopmart.dtos;
 
 
-// import com.shope.shopmart.validators.PhoneNumber;
-// import com.shope.shopmart.validators.VerifyPassword;
+import com.shope.shopmart.validators.PhoneNumber;
+import com.shope.shopmart.validators.VerifyPassword;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -11,10 +11,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-// @VerifyPassword(
-//     field = "password",
-//     matchingField = "confirmPassword"
-// )
+@VerifyPassword(
+    field = "password",
+    matchingField = "confirmPassword"
+)
 public class RegisterUserDto {
     @NotNull
     @Size(min = 3, message = "First Name should be greater than 3 characters")
@@ -35,7 +35,7 @@ public class RegisterUserDto {
 
     private String confirmPassword;
     
-    // @PhoneNumber
+    @PhoneNumber
     private String mobile;
 
     // private List<String> roles;
