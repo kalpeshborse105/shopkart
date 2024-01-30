@@ -5,41 +5,37 @@ import java.time.Instant;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 
-public class User {
+
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(nullable = false)
-    private String firstName;
+    private String city;
 
     @Column(nullable = false)
-    private String lastName;
+    private String state;
 
     @Column(nullable = false)
-    private String email;
+    private String country;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private String mobile;
+    private String zip;
 
     @CreatedDate
     private Instant createdAt;
@@ -47,8 +43,6 @@ public class User {
     @LastModifiedDate
     private Instant modifiedAt;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    @RestResource(path = "userAddress", rel = "address")
-    private Address address;
+    @OneToOne (mappedBy = "address")
+    private User user;
 }
