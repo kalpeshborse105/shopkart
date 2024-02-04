@@ -1,11 +1,6 @@
 package com.shope.shopmart.Services;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,30 +13,24 @@ import com.shope.shopmart.dtos.UpdateProductDto;
 
 @Service
 public class ProductService {
-    // private Map<Integer, Product> products = new HashMap<>();
-    // private AtomicInteger counter = new AtomicInteger();
 
     @Autowired
     private ProductRepository productRepository;
 
     public Product createProduct(AddProductDto addProductDto) {
         Product product = new Product();
-        // product.setId(counter.incrementAndGet());
         product.setProductName(addProductDto.getProductName());
         product.setManufacturingDate(addProductDto.getManufacturingDate());
         product.setManufacturer(addProductDto.getManufacturer());
         product.setPrice(addProductDto.getPrice());
         product.setDescription(addProductDto.getDescription());
         product.setImageUrl(addProductDto.getImageUrl());
-        // products.put(product.getId(), product);
         productRepository.save(product);
         return product;
     }
 
+
     // GetAllProduct
-    // public Collection<Product> getAllProducts() {
-    // return this.products.values();
-    // }
     public Iterable<Product> getAllProducts() {
         return this.productRepository.findAll();
     }
