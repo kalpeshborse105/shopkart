@@ -52,12 +52,14 @@ public class SecurityConfiguration {
         http.csrf().disable()
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("/products/**", "/categories/**")
                         .permitAll()
-                        .requestMatchers("/orders/**")
+                        .requestMatchers("/orderes/**")
                         .permitAll()
-                        .requestMatchers("/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/register/").permitAll()
+                        // .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .anyRequest()
-                        .authenticated())
+                        .authenticated()
+                        .and())
                 .authenticationProvider(daoAuthenticationProvider());
         return http.build();
     }

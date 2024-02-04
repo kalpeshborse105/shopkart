@@ -15,7 +15,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 @RepositoryRestResource(excerptProjection = UserName.class)
 public interface UserRepository extends JpaRepository<User, Integer> {
-    List<UserName> findByName(String name);
 
     List<UserName> findByFirstNameAndLastName(String firstName, String lastName);
 

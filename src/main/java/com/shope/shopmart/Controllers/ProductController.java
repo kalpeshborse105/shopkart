@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.shope.shopmart.Services.ProductService;
 import com.shope.shopmart.dtos.AddProductDto;
 import com.shope.shopmart.dtos.UpdateProductDto;
@@ -53,6 +55,18 @@ public class ProductController {
         // .ok("Product deleted successfully");
     }
 
+// image upload
+@PutMapping("/products/{id}/upload")
+    public ResponseEntity<?>upload(@PathVariable Integer id,@RequestParam MultipartFile file)
+{
+System.out.println("File Uploaded");
+return ResponseEntity.ok(this.productService.uploadFile(id,file));
+}
+
+
+
+
+// search product 
 
     @GetMapping("/search/findbymanufacturer")
     public ResponseEntity<?> getByManufacturer(@RequestParam String manufacturer) {

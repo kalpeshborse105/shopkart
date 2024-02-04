@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.shope.shopmart.Entities.RegisteredUser;
 import com.shope.shopmart.Services.AuthService;
 import com.shope.shopmart.dtos.LoginDto;
 import jakarta.annotation.security.RolesAllowed;
 
 @RestController
-// @RequestMapping("/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -31,9 +31,11 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisteredUser registeredUser) {
-        return new ResponseEntity<>(this.authService.register(registeredUser), HttpStatus.CREATED);
-    }
+public ResponseEntity<String> register(@RequestBody RegisteredUser registeredUser) {
+    authService.register(registeredUser);
+    return ResponseEntity.ok("User registered successfully");
+}
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/check")

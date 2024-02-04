@@ -1,11 +1,20 @@
 package com.shope.shopmart.Services;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.shope.shopmart.FileStorageProperties;
 import com.shope.shopmart.Entities.Product;
 import com.shope.shopmart.Repository.ProductRepository;
 import com.shope.shopmart.dtos.AddProductDto;
@@ -93,4 +102,43 @@ public class ProductService {
         public List<Product> sortByName() {
             return this.productRepository.sortByName();
         }
+    
+        // image upload 
+        private final Path rootLocation;
+
+    public ProductService(FileStorageProperties properties)
+    {
+        this.rootLocation=Paths.get(properties.getUploadDir());
+        try{
+            Files.createDirectories(rootLocation);
+        }
+        catch(IOException e)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"upload directory not created");
+        }
     }
+    public String uploadFile(Integer id, MultipartFile file) {
+      Path  destinationFile=this.rootLocation.resolve(Paths.get(file.getOriginalFilename()));
+      try{
+        InputStream inputstream=file.getInputStream();
+        Files.copy(inputstream,destinationFile,StandardCopyOption.REPLACE_EXISTING);
+        inputstream.close();
+      }
+      catch(Exception e)
+      {
+       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"file cannot be uploaded");
+      }
+      String imageUrl=ServletUriComponentsBuilder.fromCurrentContextPath()
+      .path("/products/download")
+      .path(file.getOriginalFilename())
+      .toUriString();
+
+      Product product=this.productRepository.findById(id).get();
+      product.setImageUrl(imageUrl);
+      this.productRepository.save(product);
+      return "File Uploaded Successfully";
+
+      }
+    }
+    
+
